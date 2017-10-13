@@ -23,60 +23,45 @@
  * @copyright 2017 Spencer Mortensen
  */
 
-namespace SpencerMortensen\Parser;
+namespace SpencerMortensen\Parser\Rules;
 
-class Lexer
+abstract class Rule
 {
+	const TYPE_AND = 1;
+	const TYPE_CALLABLE = 2;
+	const TYPE_MANY = 3;
+	const TYPE_OR = 4;
+	const TYPE_RE = 5;
+	const TYPE_STRING = 6;
+
 	/** @var string */
-	private $input;
+	private $name;
 
 	/** @var integer */
-	private $position;
+	private $type;
 
-	public function __construct($input)
+	/** @var null|callable */
+	private $formatter;
+
+	public function __construct($name, $type, $formatter = null)
 	{
-		$this->input = $input;
-		$this->position = 0;
+		$this->name = $name;
+		$this->type = $type;
+		$this->formatter = $formatter;
 	}
 
-	public function getString($string)
+	public function getName()
 	{
-		$length = strlen($string);
-
-		if (strncmp($this->input, $string, $length) !== 0) {
-			return false;
-		}
-
-		$this->advance($length);
-		return true;
+		return $this->name;
 	}
 
-	public function getRe($expression, &$output = null)
+	public function getType()
 	{
-		$delimiter = "\x03";
-		$flags = 'As';
-
-		$pattern = "{$delimiter}{$expression}{$delimiter}{$flags}";
-
-		if (preg_match($pattern, $this->input, $matches) !== 1) {
-			return false;
-		}
-
-		$output = $matches;
-		$length = strlen($matches[0]);
-
-		$this->advance($length);
-		return true;
+		return $this->type;
 	}
 
-	public function getPosition()
+	public function getFormatter()
 	{
-		return $this->position;
-	}
-
-	private function advance($length)
-	{
-		$this->input = substr($this->input, $length);
-		$this->position += $length;
+		return $this->formatter;
 	}
 }

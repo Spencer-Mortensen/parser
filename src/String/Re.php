@@ -23,25 +23,27 @@
  * @copyright 2017 Spencer Mortensen
  */
 
-namespace SpencerMortensen\Parser;
+namespace SpencerMortensen\Parser\String;
 
-class Exception extends \Exception
+class Re
 {
-	/** @var array */
-	private $data;
+	/** @var string */
+	private static $delimiter = "\x03";
 
-	public function __construct($position, $expectation)
+	public static function match($expression, $input, &$output, $flags = '')
 	{
-		parent::__construct();
+		$pattern = self::$delimiter . $expression . self::$delimiter . $flags;
 
-		$this->data = array(
-			'position' => $position,
-			'expectation' => $expectation
-		);
+		if (preg_match($pattern, $input, $match) !== 1) {
+			return false;
+		}
+
+		$output = $match;
+		return true;
 	}
 
-	public function getData()
+	public static function quote($literal)
 	{
-		return $this->data;
+		return preg_quote($literal, self::$delimiter);
 	}
 }
