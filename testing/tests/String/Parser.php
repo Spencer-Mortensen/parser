@@ -266,3 +266,14 @@ $input = '';
 
 // Output
 throw new ParserException('x', 0);
+
+
+// Input
+$aRule = new StringRule('x', 'a');
+$bRule = new StringRule('y', 'b');
+$andRule = new AndRule('xy', array($aRule, $bRule));
+$rule = new ManyRule('xy', $andRule, 1, 1);
+$input = '';
+
+// Output
+throw new ParserException('x', 0);

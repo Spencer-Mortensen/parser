@@ -129,13 +129,18 @@ class Parser
 
 		$input = array();
 
-		for ($i = 0; (($max === null) || ($i < $max)) && $this->runRule($childRule, $inputValue); ++$i) {
+		for ($i = 0; (($max === null) || ($i < $max)); ++$i) {
+			$this->setExpectation($childRule);
+
+			if (!$this->runRule($childRule, $inputValue)) {
+				break;
+			}
+
 			$input[] = $inputValue;
 		}
 
 		if ((($min !== null) && ($i < $min))) {
 			$this->lexer = $state;
-			$this->setExpectation($childRule);
 			return false;
 		}
 
