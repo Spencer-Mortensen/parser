@@ -172,7 +172,6 @@ $input = 'ab';
 throw new ParserException(null, 1);
 
 
-/*
 // Input
 $aRule = new StringRule('x', 'a');
 $rule = new ManyRule('xx', $aRule);
@@ -198,7 +197,7 @@ $input = 'aa';
 $output = array('a', 'a');
 
 // Input
-$aRule = new StringRule('x', 'a', 'strtoupper');
+$aRule = new StringRule('x', 'a');
 $rule = new ManyRule('xx', $aRule, 1);
 $input = '';
 
@@ -252,7 +251,6 @@ $input = 'aaaaaa';
 
 // Output
 $output = 6;
-*/
 
 
 // Input
