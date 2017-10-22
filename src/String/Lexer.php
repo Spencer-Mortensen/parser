@@ -25,6 +25,8 @@
 
 namespace SpencerMortensen\Parser\String;
 
+use SpencerMortensen\RegularExpressions\Re;
+
 class Lexer
 {
 	/** @var string */
@@ -53,15 +55,24 @@ class Lexer
 
 	public function getRe($expression, &$output = null)
 	{
-		if (!Re::match($expression, $this->input, $match, 'As')) {
+		if (!Re::match($expression, $this->input, $output, 'A')) {
 			return false;
 		}
 
-		$output = $match;
-		$length = strlen($match[0]);
-
+		$text = $this->getMatchText($output);
+		$length = strlen($text);
 		$this->advance($length);
+
 		return true;
+	}
+
+	private function getMatchText($match)
+	{
+		if (is_array($match)) {
+			return $match[0];
+		}
+
+		return $match;
 	}
 
 	private function advance($length)

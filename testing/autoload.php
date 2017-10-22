@@ -1,9 +1,12 @@
 <?php
 
 call_user_func(function () {
+	$projectDirectory = dirname(__DIR__);
+
 	$classes = array(
 		'SpencerMortensen\\Parser\\Test' => __DIR__ . '/src',
-		'SpencerMortensen\\Parser' => dirname(__DIR__) . '/src'
+		'SpencerMortensen\\Parser' => "{$projectDirectory}/src",
+		'SpencerMortensen\\RegularExpressions' => "{$projectDirectory}/vendor/spencer-mortensen/regular-expressions/src"
 	);
 
 	foreach ($classes as $namespacePrefix => $libraryPath) {
