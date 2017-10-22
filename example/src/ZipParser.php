@@ -47,9 +47,4 @@ EOS;
 	{
 		return $parts[1];
 	}
-
-	public function getExtraCode(array $match)
-	{
-		return $match[0];
-	}
 }

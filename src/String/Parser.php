@@ -192,7 +192,7 @@ class Parser
 		return true;
 	}
 
-	private function formatReOutput(Rule $rule, array $input)
+	private function formatReOutput(Rule $rule, $input)
 	{
 		$formatter = $rule->getFormatter();
 
@@ -200,7 +200,7 @@ class Parser
 			return call_user_func($formatter, $input);
 		}
 
-		return $input[0];
+		return $input;
 	}
 
 	private function runStringRule(StringRule $rule, &$output)
