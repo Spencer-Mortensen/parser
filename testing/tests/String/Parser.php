@@ -70,14 +70,14 @@ $rule = new ReRule('x', 'a?(b|c)');
 $input = 'ab';
 
 // Output
-$output = 'ab';
+$output = array('ab', 'b');
 
 // Input
-$rule = new ReRule('x', 'a?(b|c)', function ($match) { return $match; });
+$rule = new ReRule('x', 'a?(b|c)', function ($match) { return $match[1]; });
 $input = 'ab';
 
 // Output
-$output = array('ab', 'b');
+$output = 'b';
 
 
 // Input
