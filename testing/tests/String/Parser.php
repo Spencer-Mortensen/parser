@@ -3,12 +3,11 @@
 namespace SpencerMortensen\Parser\String;
 
 use SpencerMortensen\Parser\ParserException;
-use SpencerMortensen\Parser\Rules\AndRule;
-use SpencerMortensen\Parser\Rules\CallableRule;
-use SpencerMortensen\Parser\Rules\ManyRule;
-use SpencerMortensen\Parser\Rules\OrRule;
-use SpencerMortensen\Parser\Rules\ReRule;
-use SpencerMortensen\Parser\Rules\StringRule;
+use SpencerMortensen\Parser\Core\Rules\AndRule;
+use SpencerMortensen\Parser\Core\Rules\ManyRule;
+use SpencerMortensen\Parser\Core\Rules\OrRule;
+use SpencerMortensen\Parser\String\Rules\ReRule;
+use SpencerMortensen\Parser\String\Rules\StringRule;
 
 
 // Test
@@ -251,21 +250,6 @@ $input = 'aaaaaa';
 
 // Output
 $output = 6;
-
-
-// Input
-$rule = new CallableRule('x', function (&$output) { $output = 'a'; return true; });
-$input = '';
-
-// Output
-$output = 'a';
-
-// Input
-$rule = new CallableRule('x', function (&$output) { $output = 'a'; return false; });
-$input = '';
-
-// Output
-throw new ParserException('x', 0);
 
 
 // Input

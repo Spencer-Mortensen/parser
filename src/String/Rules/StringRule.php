@@ -23,45 +23,24 @@
  * @copyright 2017 Spencer Mortensen
  */
 
-namespace SpencerMortensen\Parser\Rules;
+namespace SpencerMortensen\Parser\String\Rules;
 
-abstract class Rule
+use SpencerMortensen\Parser\Rule;
+
+class StringRule extends Rule
 {
-	const TYPE_AND = 1;
-	const TYPE_CALLABLE = 2;
-	const TYPE_MANY = 3;
-	const TYPE_OR = 4;
-	const TYPE_RE = 5;
-	const TYPE_STRING = 6;
-
 	/** @var string */
-	private $name;
+	private $string;
 
-	/** @var integer */
-	private $type;
-
-	/** @var null|callable */
-	private $formatter;
-
-	public function __construct($name, $type, $formatter = null)
+	public function __construct($name, $string, $callable = null)
 	{
-		$this->name = $name;
-		$this->type = $type;
-		$this->formatter = $formatter;
+		parent::__construct($name, $callable);
+
+		$this->string = $string;
 	}
 
-	public function getName()
+	public function getString()
 	{
-		return $this->name;
-	}
-
-	public function getType()
-	{
-		return $this->type;
-	}
-
-	public function getFormatter()
-	{
-		return $this->formatter;
+		return $this->string;
 	}
 }

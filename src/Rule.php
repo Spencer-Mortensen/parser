@@ -23,22 +23,29 @@
  * @copyright 2017 Spencer Mortensen
  */
 
-namespace SpencerMortensen\Parser\Rules;
+namespace SpencerMortensen\Parser;
 
-class ReRule extends Rule
+abstract class Rule
 {
 	/** @var string */
-	private $expression;
+	private $name;
 
-	public function __construct($name, $expression, $formatter = null)
+	/** @var null|callable */
+	private $callable;
+
+	public function __construct($name, $callable = null)
 	{
-		parent::__construct($name, self::TYPE_RE, $formatter);
-
-		$this->expression = $expression;
+		$this->name = $name;
+		$this->callable = $callable;
 	}
 
-	public function getExpression()
+	public function getName()
 	{
-		return $this->expression;
+		return $this->name;
+	}
+
+	public function getCallable()
+	{
+		return $this->callable;
 	}
 }

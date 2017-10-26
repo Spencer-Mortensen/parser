@@ -25,18 +25,13 @@
 
 namespace SpencerMortensen\Parser\String;
 
-use ErrorException;
-use SpencerMortensen\Parser\Expectation;
+use SpencerMortensen\Parser\Core\Parser as CoreParser;
 use SpencerMortensen\Parser\ParserException;
-use SpencerMortensen\Parser\Rules\AndRule;
-use SpencerMortensen\Parser\Rules\ManyRule;
-use SpencerMortensen\Parser\Rules\CallableRule;
-use SpencerMortensen\Parser\Rules\OrRule;
-use SpencerMortensen\Parser\Rules\ReRule;
-use SpencerMortensen\Parser\Rules\Rule;
-use SpencerMortensen\Parser\Rules\StringRule;
+use SpencerMortensen\Parser\Rule;
+use SpencerMortensen\Parser\String\Rules\ReRule;
+use SpencerMortensen\Parser\String\Rules\StringRule;
 
-class Parser
+class Parser extends CoreParser
 {
 	/** @var Rule */
 	private $rule;
@@ -44,7 +39,7 @@ class Parser
 	/** @var Lexer */
 	private $lexer;
 
-	/** @var Expectation */
+	/** @var array */
 	private $expectation;
 
 	public function __construct(Rule $rule)
@@ -64,118 +59,15 @@ class Parser
 		return $output;
 	}
 
-	private function runRule(Rule $rule, &$output = null)
+	protected function runRule(Rule $rule, &$output = null)
 	{
-		$type = $rule->getType();
-
-		switch ($type) {
-			case Rule::TYPE_AND:
-				/** @var AndRule $rule */
-				return $this->runAndRule($rule, $output);
-
-			case Rule::TYPE_MANY:
-				/** @var ManyRule $rule */
-				return $this->runManyRule($rule, $output);
-
-			case Rule::TYPE_CALLABLE:
-				/** @var CallableRule $rule */
-				return $this->runCallableRule($rule, $output);
-
-			case Rule::TYPE_OR:
-				/** @var OrRule $rule */
-				return $this->runOrRule($rule, $output);
-
-			case Rule::TYPE_RE:
-				/** @var ReRule $rule */
-				return $this->runReRule($rule, $output);
-
-			case Rule::TYPE_STRING:
-				/** @var StringRule $rule */
-				return $this->runStringRule($rule, $output);
-
-			default:
-				throw $this->unknownRuleType($type);
+		if ($rule instanceof ReRule) { /** @var ReRule $rule */
+			return $this->runReRule($rule, $output);
+		} elseif ($rule instanceof StringRule) { /** @var StringRule $rule */
+			return $this->runStringRule($rule, $output);
+		} else {
+			return parent::runRule($rule, $output);
 		}
-	}
-
-	private function runAndRule(AndRule $rule, &$output)
-	{
-		$state = clone $this->lexer;
-
-		$childRules = $rule->getRules();
-		$input = array();
-
-		foreach ($childRules as $childRule) {
-			$this->setExpectation($childRule);
-
-			if (!$this->runRule($childRule, $input[])) {
-				$this->lexer = $state;
-				return false;
-			}
-		}
-
-		$output = $this->formatOutput($rule, $input);
-		$this->setExpectation(null);
-		return true;
-	}
-
-	private function runManyRule(ManyRule $rule, &$output)
-	{
-		$state = clone $this->lexer;
-
-		$childRule = $rule->getRule();
-		$min = $rule->getMin();
-		$max = $rule->getMax();
-
-		$input = array();
-
-		for ($i = 0; (($max === null) || ($i < $max)); ++$i) {
-			$this->setExpectation($childRule);
-
-			if (!$this->runRule($childRule, $inputValue)) {
-				break;
-			}
-
-			$input[] = $inputValue;
-		}
-
-		if ((($min !== null) && ($i < $min))) {
-			$this->lexer = $state;
-			return false;
-		}
-
-		$output = $this->formatOutput($rule, $input);
-		$this->setExpectation(null);
-		return true;
-	}
-
-	private function runCallableRule(CallableRule $rule, &$output)
-	{
-		$callable = $rule->getCallable();
-
-		if (!call_user_func_array($callable, array(&$output))) {
-			$this->setExpectation($rule);
-			return false;
-		}
-
-		$this->setExpectation(null);
-		return true;
-	}
-
-	private function runOrRule(OrRule $rule, &$output)
-	{
-		$childRules = $rule->getRules();
-
-		foreach ($childRules as $childRule) {
-			if ($this->runRule($childRule, $input)) {
-				$output = $this->formatOutput($rule, $input);
-				$this->setExpectation(null);
-				return true;
-			}
-		}
-
-		$this->setExpectation($rule);
-		return false;
 	}
 
 	private function runReRule(ReRule $rule, &$output)
@@ -194,10 +86,10 @@ class Parser
 
 	private function formatReOutput(Rule $rule, $input)
 	{
-		$formatter = $rule->getFormatter();
+		$callable = $rule->getCallable();
 
-		if ($formatter !== null) {
-			return call_user_func($formatter, $input);
+		if ($callable !== null) {
+			return call_user_func($callable, $input);
 		}
 
 		return $input;
@@ -212,17 +104,17 @@ class Parser
 			return false;
 		}
 
-		$output = $this->formatOutput($rule, $string);
+		$output = $this->formatStringOutput($rule, $string);
 		$this->setExpectation(null);
 		return true;
 	}
 
-	private function formatOutput(Rule $rule, $input)
+	private function formatStringOutput(Rule $rule, $input)
 	{
-		$formatter = $rule->getFormatter();
+		$callable = $rule->getCallable();
 
-		if ($formatter !== null) {
-			return call_user_func($formatter, $input);
+		if ($callable !== null) {
+			return call_user_func($callable, $input);
 		}
 
 		return $input;
@@ -230,20 +122,22 @@ class Parser
 
 	private function parserException()
 	{
-		$ruleName = $this->expectation->getRuleName();
-		$state = $this->expectation->getState();
+		list($ruleName, $position) = $this->expectation;
 
-		return new ParserException($ruleName, $state);
+		return new ParserException($ruleName, $position);
 	}
 
-	private function unknownRuleType($type)
+	protected function getState()
 	{
-		$ruleType = json_encode($type);
-
-		return new ErrorException("Unknown rule type ($ruleType)");
+		return clone $this->lexer;
 	}
 
-	private function setExpectation(Rule $rule = null)
+	protected function setState($lexer)
+	{
+		$this->lexer = $lexer;
+	}
+
+	protected function setExpectation(Rule $rule = null)
 	{
 		if ($rule === null) {
 			$ruleName = null;
@@ -253,6 +147,6 @@ class Parser
 
 		$position = $this->lexer->getPosition();
 
-		$this->expectation = new Expectation($ruleName, $position);
+		$this->expectation = array($ruleName, $position);
 	}
 }

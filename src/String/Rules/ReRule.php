@@ -23,22 +23,24 @@
  * @copyright 2017 Spencer Mortensen
  */
 
-namespace SpencerMortensen\Parser\Rules;
+namespace SpencerMortensen\Parser\String\Rules;
 
-class StringRule extends Rule
+use SpencerMortensen\Parser\Rule;
+
+class ReRule extends Rule
 {
 	/** @var string */
-	private $string;
+	private $expression;
 
-	public function __construct($name, $string, $formatter = null)
+	public function __construct($name, $expression, $callable = null)
 	{
-		parent::__construct($name, self::TYPE_STRING, $formatter);
+		parent::__construct($name, $callable);
 
-		$this->string = $string;
+		$this->expression = $expression;
 	}
 
-	public function getString()
+	public function getExpression()
 	{
-		return $this->string;
+		return $this->expression;
 	}
 }

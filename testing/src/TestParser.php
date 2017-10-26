@@ -2,12 +2,12 @@
 
 namespace SpencerMortensen\Parser\Test;
 
-use SpencerMortensen\Parser\ReadableRules;
+use SpencerMortensen\Parser\String\Rules;
 use SpencerMortensen\Parser\String\Parser;
 
 class TestParser
 {
-	/** @var ReadableRules */
+	/** @var Rules */
 	private $rules;
 
 	public function __construct()
@@ -26,7 +26,7 @@ orandABC: OR andAB c
 orCandAB: OR c andAB
 EOS;
 
-		$this->rules = new ReadableRules($this, $grammar);
+		$this->rules = new Rules($this, $grammar);
 	}
 
 	public function parse($name, $input)

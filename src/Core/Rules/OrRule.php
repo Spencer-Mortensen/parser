@@ -23,29 +23,24 @@
  * @copyright 2017 Spencer Mortensen
  */
 
-namespace SpencerMortensen\Parser;
+namespace SpencerMortensen\Parser\Core\Rules;
 
-class Expectation
+use SpencerMortensen\Parser\Rule;
+
+class OrRule extends Rule
 {
-	/** @var mixed */
-	private $rule;
+	/** @var Rule[] */
+	private $rules;
 
-	/** @var mixed */
-	private $state;
-
-	public function __construct($rule, $state)
+	public function __construct($name, array $rules, $callable = null)
 	{
-		$this->rule = $rule;
-		$this->state = $state;
+		parent::__construct($name, $callable);
+
+		$this->rules = $rules;
 	}
 
-	public function getRuleName()
+	public function getRules()
 	{
-		return $this->rule;
-	}
-
-	public function getState()
-	{
-		return $this->state;
+		return $this->rules;
 	}
 }

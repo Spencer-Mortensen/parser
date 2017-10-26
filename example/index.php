@@ -27,6 +27,7 @@ function parse($input)
 	try {
 		$parser = new ZipParser();
 		$data = $parser->parse($input);
+
 		return json_encode($data);
 	} catch (ParserException $exception) {
 		$rule = $exception->getRule();

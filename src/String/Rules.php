@@ -23,22 +23,41 @@
  * @copyright 2017 Spencer Mortensen
  */
 
-namespace SpencerMortensen\Parser\Rules;
+namespace SpencerMortensen\Parser\String;
 
-class AndRule extends Rule
+use SpencerMortensen\Parser\Core\Rules as CoreRules;
+use SpencerMortensen\Parser\String\Rules\ReRule;
+use SpencerMortensen\Parser\String\Rules\StringRule;
+
+class Rules extends CoreRules
 {
-	/** @var Rule[] */
-	private $rules;
-
-	public function __construct($name, array $rules, $formatter = null)
+	protected function createRule($name, $type, $definition)
 	{
-		parent::__construct($name, self::TYPE_AND, $formatter);
+		switch ($type) {
+			case 're':
+				return $this->createReRule($name, $definition);
 
-		$this->rules = $rules;
+			case 'string':
+				return $this->createStringRule($name, $definition);
+
+			default:
+				return parent::createRule($name, $type, $definition);
+		}
 	}
 
-	public function getRules()
+	private function createReRule($name, $definition)
 	{
-		return $this->rules;
+		$expression = $definition;
+		$callable = $this->getCallable($name);
+
+		return new ReRule($name, $expression, $callable);
+	}
+
+	private function createStringRule($name, $definition)
+	{
+		$string = $definition;
+		$callable = $this->getCallable($name);
+
+		return new StringRule($name, $string, $callable);
 	}
 }

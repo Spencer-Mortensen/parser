@@ -23,22 +23,42 @@
  * @copyright 2017 Spencer Mortensen
  */
 
-namespace SpencerMortensen\Parser\Rules;
+namespace SpencerMortensen\Parser\Core\Rules;
 
-class CallableRule extends Rule
+use SpencerMortensen\Parser\Rule;
+
+class ManyRule extends Rule
 {
-	/** @var string */
-	private $callable;
+	/** @var Rule */
+	private $rule;
 
-	public function __construct($name, $callable)
+	/** @var null|integer */
+	private $min;
+
+	/** @var null|integer */
+	private $max;
+
+	public function __construct($name, &$rule, $min = null, $max = null, $callable = null)
 	{
-		parent::__construct($name, self::TYPE_CALLABLE);
+		parent::__construct($name, $callable);
 
-		$this->callable = $callable;
+		$this->rule = &$rule;
+		$this->min = $min;
+		$this->max = $max;
 	}
 
-	public function getCallable()
+	public function getRule()
 	{
-		return $this->callable;
+		return $this->rule;
+	}
+
+	public function getMin()
+	{
+		return $this->min;
+	}
+
+	public function getMax()
+	{
+		return $this->max;
 	}
 }

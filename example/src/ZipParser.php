@@ -13,7 +13,7 @@ class ZipParser extends Parser
 zip: AND basicCode optionalExtraSuffix
 basicCode: MANY digit 5 5
 digit: RE [0-9]
-optionalExtraSuffix: MANY extraSuffix 0
+optionalExtraSuffix: MANY extraSuffix 0 1
 extraSuffix: AND dash extraCode
 dash: STRING -
 extraCode: RE [0-9]{4}

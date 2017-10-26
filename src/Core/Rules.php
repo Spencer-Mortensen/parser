@@ -23,24 +23,20 @@
  * @copyright 2017 Spencer Mortensen
  */
 
-namespace SpencerMortensen\Parser;
+namespace SpencerMortensen\Parser\Core;
 
 use ErrorException;
-use SpencerMortensen\Parser\Rules\AndRule;
-use SpencerMortensen\Parser\Rules\ManyRule;
-use SpencerMortensen\Parser\Rules\CallableRule;
-use SpencerMortensen\Parser\Rules\OrRule;
-use SpencerMortensen\Parser\Rules\ReRule;
-use SpencerMortensen\Parser\Rules\Rule;
-use SpencerMortensen\Parser\Rules\StringRule;
+use SpencerMortensen\Parser\Core\Rules\AndRule;
+use SpencerMortensen\Parser\Core\Rules\ManyRule;
+use SpencerMortensen\Parser\Core\Rules\OrRule;
 
-class ReadableRules
+class Rules
 {
 	/** @var Object */
 	private $object;
 
-	/** @var Rule[] */
-	private $rules;
+	/** @var array */
+	protected $rules;
 
 	public function __construct($object, $grammar)
 	{
@@ -74,11 +70,13 @@ class ReadableRules
 			}
 
 			list($name, $text) = explode(':', $line, 2);
-			list($type, $definition) = explode(' ', ltrim($text), 2);
 
 			if (isset($this->rules[$name])) {
 				throw $this->redefinedRule($name);
 			}
+
+			@list($type, $definition) = explode(' ', ltrim($text), 2);
+			$type = strtolower($type);
 
 			$this->rules[$name] = $this->createRule($name, $type, $definition);
 		}
@@ -90,10 +88,8 @@ class ReadableRules
 		}
 	}
 
-	private function createRule($name, $type, $definition)
+	protected function createRule($name, $type, $definition)
 	{
-		$type = strtolower($type);
-
 		switch ($type) {
 			case 'and':
 				return $this->createAndRule($name, $definition);
@@ -101,17 +97,8 @@ class ReadableRules
 			case 'many':
 				return $this->createManyRule($name, $definition);
 
-			case 'method':
-				return $this->createMethodRule($name, $definition);
-
 			case 'or':
 				return $this->createOrRule($name, $definition);
-
-			case 're':
-				return $this->createReRule($name, $definition);
-
-			case 'string':
-				return $this->createStringRule($name, $definition);
 
 			default:
 				throw $this->unknownRuleType($type);
@@ -120,10 +107,11 @@ class ReadableRules
 
 	private function createAndRule($name, $definition)
 	{
-		$rules = $this->getRulesList($definition);
-		$formatter = $this->getFormatter($name);
+		$ruleNames = explode(' ', $definition);
+		$rules = $this->getRules($ruleNames);
+		$callable = $this->getCallable($name);
 
-		return new AndRule($name, $rules, $formatter);
+		return new AndRule($name, $rules, $callable);
 	}
 
 	private function createManyRule($name, $definition)
@@ -136,48 +124,23 @@ class ReadableRules
 		$min = &$arguments[0];
 		$max = &$arguments[1];
 
-		$formatter = $this->getFormatter($name);
+		$callable = $this->getCallable($name);
 
-		return new ManyRule($name, $childRule, $min, $max, $formatter);
-	}
-
-	private function createMethodRule($name, $definition)
-	{
-		$method = $definition;
-		$callable = array($this->object, $method);
-
-		return new CallableRule($name, $callable);
+		return new ManyRule($name, $childRule, $min, $max, $callable);
 	}
 
 	private function createOrRule($name, $definition)
 	{
-		$rules = $this->getRulesList($definition);
-		$formatter = $this->getFormatter($name);
+		$ruleNames = explode(' ', $definition);
+		$rules = $this->getRules($ruleNames);
+		$callable = $this->getCallable($name);
 
-		return new OrRule($name, $rules, $formatter);
+		return new OrRule($name, $rules, $callable);
 	}
 
-	private function createReRule($name, $definition)
-	{
-		$expression = $definition;
-		$formatter = $this->getFormatter($name);
-
-		return new ReRule($name, $expression, $formatter);
-	}
-
-	private function createStringRule($name, $definition)
-	{
-		$string = $definition;
-		$formatter = $this->getFormatter($name);
-
-		return new StringRule($name, $string, $formatter);
-	}
-
-	private function getRulesList($definition)
+	protected function getRules(array $names)
 	{
 		$rules = array();
-
-		$names = explode(' ', $definition);
 
 		foreach ($names as $name) {
 			$rules[] = &$this->rules[$name];
@@ -186,7 +149,7 @@ class ReadableRules
 		return $rules;
 	}
 
-	private function getFormatter($name)
+	protected function getCallable($name)
 	{
 		$method = 'get' . ucfirst($name);
 		$callable = array($this->object, $method);

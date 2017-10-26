@@ -23,40 +23,24 @@
  * @copyright 2017 Spencer Mortensen
  */
 
-namespace SpencerMortensen\Parser\Rules;
+namespace SpencerMortensen\Parser\Core\Rules;
 
-class ManyRule extends Rule
+use SpencerMortensen\Parser\Rule;
+
+class AndRule extends Rule
 {
-	/** @var Rule */
-	private $rule;
+	/** @var Rule[] */
+	private $rules;
 
-	/** @var null|integer */
-	private $min;
-
-	/** @var null|integer */
-	private $max;
-
-	public function __construct($name, &$rule, $min = null, $max = null, $formatter = null)
+	public function __construct($name, array $rules, $callable = null)
 	{
-		parent::__construct($name, self::TYPE_MANY, $formatter);
+		parent::__construct($name, $callable);
 
-		$this->rule = &$rule;
-		$this->min = $min;
-		$this->max = $max;
+		$this->rules = $rules;
 	}
 
-	public function getRule()
+	public function getRules()
 	{
-		return $this->rule;
-	}
-
-	public function getMin()
-	{
-		return $this->min;
-	}
-
-	public function getMax()
-	{
-		return $this->max;
+		return $this->rules;
 	}
 }
