@@ -75,8 +75,9 @@ class Rules
 				throw $this->redefinedRule($name);
 			}
 
-			@list($type, $definition) = explode(' ', ltrim($text), 2);
-			$type = strtolower($type);
+			$parts = explode(' ', ltrim($text), 2);
+			$type = strtolower($parts[0]);
+			$definition = &$parts[1];
 
 			$this->rules[$name] = $this->createRule($name, $type, $definition);
 		}
