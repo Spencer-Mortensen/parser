@@ -22,6 +22,8 @@ composer require spencer-mortensen/parser
 
 This project uses the [Lens](http://lens.guide) unit-testing framework.
 
+[![Build Status](https://travis-ci.org/Spencer-Mortensen/parser.png?branch=master)](https://travis-ci.org/Spencer-Mortensen/parser)
+
 ## Author
 
 [Spencer Mortensen](http://spencermortensen.com/contact/)
