@@ -4,7 +4,7 @@ Define and parse a context-free grammar.
 
 ## Requirements
 
- * PHP >= 5.3
+ * PHP >= 5.6
 
 ## License
 

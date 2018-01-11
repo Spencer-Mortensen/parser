@@ -9,3 +9,7 @@ install:
  - composer install
 script:
  - ./lens --report=xunit
+notifications:
+   email:
+      on_success: never
+      on_failure: always
