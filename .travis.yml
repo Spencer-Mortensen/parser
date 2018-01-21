@@ -8,7 +8,7 @@ install:
  - php -r 'copy("http://lens.guide/lens.phar", "lens"); chmod("lens", 0755);'
  - composer install
 script:
- - ./lens --report=xunit
+ - ./lens
 notifications:
    email:
       on_success: never
