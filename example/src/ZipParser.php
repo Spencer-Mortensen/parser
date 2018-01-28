@@ -2,8 +2,8 @@
 
 namespace Example;
 
-use SpencerMortensen\Parser\ReadableRules;
 use SpencerMortensen\Parser\String\Parser;
+use SpencerMortensen\Parser\String\Rules;
 
 class ZipParser extends Parser
 {
@@ -19,7 +19,7 @@ dash: STRING -
 extraCode: RE [0-9]{4}
 EOS;
 
-		$rules = new ReadableRules($this, $grammar);
+		$rules = new Rules($this, $grammar);
 		$rule = $rules->getRule('zip');
 
 		parent::__construct($rule);

@@ -4,7 +4,7 @@ namespace Example;
 
 use SpencerMortensen\Parser\ParserException;
 
-require 'autoload.php';
+require __DIR__ . '/autoload.php';
 
 $input = '01234';
 echo parse($input), "\n";

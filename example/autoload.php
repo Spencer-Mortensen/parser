@@ -1,30 +1,15 @@
 <?php
 
-call_user_func(function () {
-	$classes = array(
-		'Example' => __DIR__ . '/src',
-		'SpencerMortensen\\Parser' => dirname(__DIR__) . '/src',
-		'SpencerMortensen\\RegularExpressions' => dirname(__DIR__) . '/vendor/spencer-mortensen/regular-expressions/src'
-	);
+namespace SpencerMortensen\Autoloader;
 
-	foreach ($classes as $namespacePrefix => $libraryPath) {
-		$namespacePrefix .= '\\';
-		$namespacePrefixLength = strlen($namespacePrefix);
+$project = dirname(__DIR__);
 
-		$autoloader = function ($class) use ($namespacePrefix, $namespacePrefixLength, $libraryPath) {
-			if (strncmp($class, $namespacePrefix, $namespacePrefixLength) !== 0) {
-				return;
-			}
+$classes = array(
+	'Example' => 'example/src',
+	'SpencerMortensen\\Parser' => 'src',
+	'SpencerMortensen\\RegularExpressions' => 'vendor/spencer-mortensen/regular-expressions/src'
+);
 
-			$relativeClassName = substr($class, $namespacePrefixLength);
-			$relativeFilePath = strtr($relativeClassName, '\\', '/') . '.php';
-			$absoluteFilePath = "{$libraryPath}/{$relativeFilePath}";
+require "{$project}/vendor/spencer-mortensen/autoloader/src/Autoloader.php";
 
-			if (is_file($absoluteFilePath)) {
-				include $absoluteFilePath;
-			}
-		};
-
-		spl_autoload_register($autoloader);
-	}
-});
+new Autoloader($project, $classes);
