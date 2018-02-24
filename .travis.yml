@@ -7,7 +7,7 @@ php:
  - '7.1'
 
 install:
- - php -r 'copy("http://lens.guide/lens.phar", "lens.phar"); chmod("lens", 0755);'
+ - php -r 'copy("http://lens.guide/lens.phar", "lens.phar"); chmod("lens.phar", 0755);'
  - composer install
 
 script:
