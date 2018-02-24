@@ -1,14 +1,18 @@
 language: php
 sudo: required
 dist: trusty
+
 php:
  - '5.6'
  - '7.1'
+
 install:
- - php -r 'copy("http://lens.guide/lens.phar", "lens"); chmod("lens", 0755);'
+ - php -r 'copy("http://lens.guide/lens.phar", "lens.phar"); chmod("lens", 0755);'
  - composer install
+
 script:
- - ./lens
+ - ./lens.phar
+
 notifications:
    email:
       on_start: never

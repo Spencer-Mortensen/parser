@@ -5,7 +5,7 @@ namespace SpencerMortensen\Autoloader;
 $project = dirname(__DIR__);
 
 $classes = array(
-	'SpencerMortensen\\Parser\\Test' => 'testing/src',
+	'SpencerMortensen\\Parser\\Test' => 'lens/src',
 	'SpencerMortensen\\Parser' => 'src',
 	'SpencerMortensen\\RegularExpressions' => 'vendor/spencer-mortensen/regular-expressions/src'
 );

@@ -1,6 +1,6 @@
 /.idea/
+/lens/coverage/
 /vendor/
 /composer.lock
-coverage/
 /TODO
 *.swp
