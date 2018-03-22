@@ -1,4 +1,5 @@
 /.idea/
+/lens/cache/
 /lens/coverage/
 /vendor/
 /composer.lock
