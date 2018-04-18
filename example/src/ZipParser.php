@@ -7,6 +7,8 @@ use SpencerMortensen\Parser\String\Rules;
 
 class ZipParser extends Parser
 {
+	private $rule;
+
 	public function __construct()
 	{
 		$grammar = <<<'EOS'
@@ -20,9 +22,12 @@ extraCode: RE [0-9]{4}
 EOS;
 
 		$rules = new Rules($this, $grammar);
-		$rule = $rules->getRule('zip');
+		$this->rule = $rules->getRule('zip');
+	}
 
-		parent::__construct($rule);
+	public function parse($input)
+	{
+		return $this->run($this->rule, $input);
 	}
 
 	public function getZip(array $parts)

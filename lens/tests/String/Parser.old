@@ -11,303 +11,303 @@ use SpencerMortensen\Parser\String\Rules\StringRule;
 
 
 // Test
+$parser = new Parser();
 $rule = new StringRule('x', 'a');
-$parser = new Parser($rule);
-$parser->parse('');
+$parser->run($rule, '');
 
 // Output
 throw new ParserException('x', 0);
 
 
 // Test
+$parser = new Parser();
 $rule = new StringRule('x', 'a');
-$parser = new Parser($rule);
-$output = $parser->parse('a');
+$output = $parser->run($rule, 'a');
 
 // Output
 $output = 'a';
 
 
 // Test
+$parser = new Parser();
 $rule = new StringRule('x', 'a', 'strtoupper');
-$parser = new Parser($rule);
-$output = $parser->parse('a');
+$output = $parser->run($rule, 'a');
 
 // Output
 $output = 'A';
 
 
 // Test
+$parser = new Parser();
 $rule = new StringRule('x', 'a');
-$parser = new Parser($rule);
-$output = $parser->parse('b');
+$output = $parser->run($rule, 'b');
 
 // Output
 throw new ParserException('x', 0);
 
 
 // Test
+$parser = new Parser();
 $rule = new StringRule('x', 'a');
-$parser = new Parser($rule);
-$output = $parser->parse('ab');
+$output = $parser->run($rule, 'ab');
 
 // Output
 throw new ParserException(null, 1);
 
 
 // Test
+$parser = new Parser();
 $rule = new StringRule('xy', 'ab');
-$parser = new Parser($rule);
-$output = $parser->parse('ac');
+$output = $parser->run($rule, 'ac');
 
 // Output
 throw new ParserException('xy', 0);
 
 
 // Test
+$parser = new Parser();
 $rule = new ReRule('x', 'a?(b|c)');
-$parser = new Parser($rule);
-$output = $parser->parse('d');
+$output = $parser->run($rule, 'd');
 
 // Output
 throw new ParserException('x', 0);
 
 
 // Test
+$parser = new Parser();
 $rule = new ReRule('x', 'a?(b|c)');
-$parser = new Parser($rule);
-$output = $parser->parse('ab');
+$output = $parser->run($rule, 'ab');
 
 // Output
 $output = array('ab', 'b');
 
 
 // Test
+$parser = new Parser();
 $rule = new ReRule('x', 'a?(b|c)', function ($match) { return $match[1]; });
-$parser = new Parser($rule);
-$output = $parser->parse('ab');
+$output = $parser->run($rule, 'ab');
 
 // Output
 $output = 'b';
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $bRule = new StringRule('y', 'b');
 $rule = new AndRule('xy', array($aRule, $bRule));
-$parser = new Parser($rule);
-$output = $parser->parse('');
+$output = $parser->run($rule, '');
 
 // Output
 throw new ParserException('x', 0);
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $bRule = new StringRule('y', 'b');
 $rule = new AndRule('xy', array($aRule, $bRule));
-$parser = new Parser($rule);
-$output = $parser->parse('a');
+$output = $parser->run($rule, 'a');
 
 // Output
 throw new ParserException('y', 1);
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $bRule = new StringRule('y', 'b');
 $rule = new AndRule('xy', array($aRule, $bRule));
-$parser = new Parser($rule);
-$output = $parser->parse('ab');
+$output = $parser->run($rule, 'ab');
 
 // Output
 $output = array('a', 'b');
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $bRule = new StringRule('y', 'b');
 $rule = new AndRule('xy', array($aRule, $bRule), function ($values) { return implode('', $values); });
-$parser = new Parser($rule);
-$output = $parser->parse('ab');
+$output = $parser->run($rule, 'ab');
 
 // Output
 $output = 'ab';
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $bRule = new StringRule('y', 'b');
 $rule = new AndRule('xy', array($aRule, $bRule));
-$parser = new Parser($rule);
-$output = $parser->parse('abc');
+$output = $parser->run($rule, 'abc');
 
 // Output
 throw new ParserException(null, 2);
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $bRule = new StringRule('y', 'b');
 $rule = new OrRule('xy', array($aRule, $bRule));
-$parser = new Parser($rule);
-$output = $parser->parse('');
+$output = $parser->run($rule, '');
 
 // Output
 throw new ParserException('xy', 0);
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $bRule = new StringRule('y', 'b');
 $rule = new OrRule('xy', array($aRule, $bRule));
-$parser = new Parser($rule);
-$output = $parser->parse('a');
+$output = $parser->run($rule, 'a');
 
 // Output
 $output = 'a';
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $bRule = new StringRule('y', 'b');
 $rule = new OrRule('xy', array($aRule, $bRule));
-$parser = new Parser($rule);
-$output = $parser->parse('b');
+$output = $parser->run($rule, 'b');
 
 // Output
 $output = 'b';
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $bRule = new StringRule('y', 'b');
 $rule = new OrRule('xy', array($aRule, $bRule));
-$parser = new Parser($rule);
-$output = $parser->parse('c');
+$output = $parser->run($rule, 'c');
 
 // Output
 throw new ParserException('xy', 0);
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $bRule = new StringRule('y', 'b');
 $rule = new OrRule('xy', array($aRule, $bRule));
-$parser = new Parser($rule);
-$output = $parser->parse('ab');
+$output = $parser->run($rule, 'ab');
 
 // Output
 throw new ParserException(null, 1);
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $rule = new ManyRule('xx', $aRule);
-$parser = new Parser($rule);
-$output = $parser->parse('');
+$output = $parser->run($rule, '');
 
 // Output
 $output = array();
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $rule = new ManyRule('xx', $aRule);
-$parser = new Parser($rule);
-$output = $parser->parse('a');
+$output = $parser->run($rule, 'a');
 
 // Output
 $output = array('a');
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $rule = new ManyRule('xx', $aRule);
-$parser = new Parser($rule);
-$output = $parser->parse('aa');
+$output = $parser->run($rule, 'aa');
 
 // Output
 $output = array('a', 'a');
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $rule = new ManyRule('xx', $aRule, 1);
-$parser = new Parser($rule);
-$output = $parser->parse('');
+$output = $parser->run($rule, '');
 
 // Output
 throw new ParserException('x', 0);
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $rule = new ManyRule('xx', $aRule, 1);
-$parser = new Parser($rule);
-$output = $parser->parse('a');
+$output = $parser->run($rule, 'a');
 
 // Output
 $output = array('a');
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $rule = new ManyRule('xx', $aRule, 1);
-$parser = new Parser($rule);
-$output = $parser->parse('aa');
+$output = $parser->run($rule, 'aa');
 
 // Output
 $output = array('a', 'a');
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $rule = new ManyRule('xx', $aRule, 1, 1);
-$parser = new Parser($rule);
-$output = $parser->parse('');
+$output = $parser->run($rule, '');
 
 // Output
 throw new ParserException('x', 0);
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $rule = new ManyRule('xx', $aRule, 1, 1);
-$parser = new Parser($rule);
-$output = $parser->parse('a');
+$output = $parser->run($rule, 'a');
 
 // Output
 $output = array('a');
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $rule = new ManyRule('xx', $aRule, 1, 1);
-$parser = new Parser($rule);
-$output = $parser->parse('aa');
+$output = $parser->run($rule, 'aa');
 
 // Output
 throw new ParserException(null, 1);
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $rule = new ManyRule('xx', $aRule, null, null, 'count');
-$parser = new Parser($rule);
-$output = $parser->parse('aaaaaa');
+$output = $parser->run($rule, 'aaaaaa');
 
 // Output
 $output = 6;
 
 
 // Test
+$parser = new Parser();
 $aRule = new StringRule('x', 'a');
 $bRule = new StringRule('y', 'b');
 $andRule = new AndRule('xy', array($aRule, $bRule));
 $rule = new ManyRule('xy', $andRule, 1, 1);
-$parser = new Parser($rule);
-$output = $parser->parse('');
+$output = $parser->run($rule, '');
 
 // Output
 throw new ParserException('x', 0);

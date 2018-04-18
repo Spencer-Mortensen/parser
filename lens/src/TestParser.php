@@ -5,7 +5,7 @@ namespace SpencerMortensen\Parser\Test;
 use SpencerMortensen\Parser\String\Rules;
 use SpencerMortensen\Parser\String\Parser;
 
-class TestParser
+class TestParser extends Parser
 {
 	/** @var Rules */
 	private $rules;
@@ -32,9 +32,7 @@ EOS;
 	public function parse($name, $input)
 	{
 		$rule = $this->rules->getRule($name);
-		$parser = new Parser($rule);
-
-		return $parser->parse($input);
+		return $this->run($rule, $input);
 	}
 
 	public function getAndAB(array $input)

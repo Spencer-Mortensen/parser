@@ -20,7 +20,7 @@ echo parse($input), "\n";
 
 $input = '01234/0123';
 echo parse($input), "\n";
-// Expected null at position 5, but found '/0123' instead.
+// Expected nothing at position 5, but found '/0123' instead.
 
 function parse($input)
 {
