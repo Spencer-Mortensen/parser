@@ -56,7 +56,7 @@ $rule = 'orandABC';
 $input = 'abd';
 
 // Output
-throw new ParserException(null, 2);
+$output = 'A and B';
 
 
 // Input
