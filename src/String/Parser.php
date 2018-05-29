@@ -44,7 +44,7 @@ abstract class Parser extends CoreParser
 		$this->lexer = new Lexer($input);
 		$this->setExpectation(null);
 
-		if (!$this->runRule($rule, $output) || !$this->lexer->isHalted()) {
+		if (!$this->runRule($rule, $output)) {
 			throw $this->parserException();
 		}
 
