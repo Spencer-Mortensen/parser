@@ -57,7 +57,7 @@ class Rules
 
 	private function setRules($grammar)
 	{
-		$this->rules = array();
+		$this->rules = [];
 
 		$grammar = trim($grammar);
 		$lines = explode("\n", $grammar);
@@ -141,7 +141,7 @@ class Rules
 
 	protected function getRules(array $names)
 	{
-		$rules = array();
+		$rules = [];
 
 		foreach ($names as $name) {
 			$rules[] = &$this->rules[$name];
@@ -153,7 +153,7 @@ class Rules
 	protected function getCallable($name)
 	{
 		$method = 'get' . ucfirst($name);
-		$callable = array($this->object, $method);
+		$callable = [$this->object, $method];
 
 		if (is_callable($callable)) {
 			return $callable;

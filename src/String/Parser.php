@@ -139,7 +139,7 @@ abstract class Parser extends CoreParser
 
 		$position = $this->lexer->getPosition();
 
-		$this->expectation = array($ruleName, $position);
+		$this->expectation = [$ruleName, $position];
 	}
 
 	protected function getPosition()

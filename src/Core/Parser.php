@@ -54,7 +54,7 @@ abstract class Parser
 		$state = $this->getState();
 
 		$childRules = $rule->getRules();
-		$input = array();
+		$input = [];
 
 		foreach ($childRules as $childRule) {
 			$this->setExpectation($childRule);
@@ -78,7 +78,7 @@ abstract class Parser
 		$min = $rule->getMin();
 		$max = $rule->getMax();
 
-		$input = array();
+		$input = [];
 
 		for ($i = 0; (($max === null) || ($i < $max)); ++$i) {
 			$this->setExpectation($childRule);

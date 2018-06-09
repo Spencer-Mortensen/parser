@@ -32,10 +32,10 @@ EOS;
 
 	public function getZip(array $parts)
 	{
-		return array(
+		return [
 			'basic' => $parts[0],
 			'extra' => $parts[1]
-		);
+		];
 	}
 
 	public function getBasicCode(array $digits)
