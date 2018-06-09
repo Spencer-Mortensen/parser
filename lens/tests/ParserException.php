@@ -43,7 +43,7 @@ $input = 'a';
 $output = 'a';
 
 // Input
-$input = array('abc', 'ABC');
+$input = ['abc', 'ABC'];
 
 // Output
-$output = array('abc', 'ABC');
+$output = ['abc', 'ABC'];
