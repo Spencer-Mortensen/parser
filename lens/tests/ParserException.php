@@ -7,22 +7,22 @@ $exception = new ParserException($input, null);
 $output = $exception->getRule();
 
 
-// Input
+// Cause
 $input = null;
 
-// Output
+// Effect
 $output = null;
 
-// Input
+// Cause
 $input = 'a';
 
-// Output
+// Effect
 $output = 'a';
 
-// Input
+// Cause
 $input = 'name';
 
-// Output
+// Effect
 $output = 'name';
 
 
@@ -30,20 +30,20 @@ $output = 'name';
 $exception = new ParserException(null, $input);
 $output = $exception->getState();
 
-// Input
+// Cause
 $input = null;
 
-// Output
+// Effect
 $output = null;
 
-// Input
+// Cause
 $input = 'a';
 
-// Output
+// Effect
 $output = 'a';
 
-// Input
+// Cause
 $input = ['abc', 'ABC'];
 
-// Output
+// Effect
 $output = ['abc', 'ABC'];

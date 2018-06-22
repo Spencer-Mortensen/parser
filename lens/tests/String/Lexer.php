@@ -7,53 +7,53 @@ namespace SpencerMortensen\Parser\String;
 $lexer = new Lexer($subject);
 $isMatch = $lexer->getString($target);
 
-// Input
+// Cause
 $subject = '';
 $target = '';
 
-// Output
+// Effect
 $isMatch = true;
 
-// Input
+// Cause
 $subject = '';
 $target = 'a';
 
-// Output
+// Effect
 $isMatch = false;
 
-// Input
+// Cause
 $subject = 'a';
 $target = '';
 
-// Output
+// Effect
 $isMatch = true;
 
-// Input
+// Cause
 $subject = 'a';
 $target = 'a';
 
-// Output
+// Effect
 $isMatch = true;
 
-// Input
+// Cause
 $subject = 'a';
 $target = 'b';
 
-// Output
+// Effect
 $isMatch = false;
 
-// Input
+// Cause
 $subject = 'abc';
 $target = 'abc';
 
-// Output
+// Effect
 $isMatch = true;
 
-// Input
+// Cause
 $subject = 'abc';
 $target = 'abd';
 
-// Output
+// Effect
 $isMatch = false;
 
 
@@ -61,60 +61,60 @@ $isMatch = false;
 $lexer = new Lexer($subject);
 $isMatch = $lexer->getRe($target);
 
-// Input
+// Cause
 $subject = '';
 $target = '';
 
-// Output
+// Effect
 $isMatch = true;
 
-// Input
+// Cause
 $subject = '';
 $target = 'a';
 
-// Output
+// Effect
 $isMatch = false;
 
-// Input
+// Cause
 $subject = '';
 $target = 'a?';
 
-// Output
+// Effect
 $isMatch = true;
 
-// Input
+// Cause
 $subject = 'a';
 $target = '';
 
-// Output
+// Effect
 $isMatch = true;
 
-// Input
+// Cause
 $subject = 'a';
 $target = 'a';
 
-// Output
+// Effect
 $isMatch = true;
 
-// Input
+// Cause
 $subject = 'a';
 $target = 'b';
 
-// Output
+// Effect
 $isMatch = false;
 
-// Input
+// Cause
 $subject = 'abc';
 $target = 'abd';
 
-// Output
+// Effect
 $isMatch = false;
 
-// Input
+// Cause
 $subject = 'abc';
 $target = 'ab(c|d)';
 
-// Output
+// Effect
 $isMatch = true;
 
 
@@ -124,42 +124,42 @@ $lexer->getString($target);
 $position = $lexer->getPosition();
 $isHalted = $lexer->isHalted();
 
-// Input
+// Cause
 $subject = '';
 $target = '';
 
-// Output
+// Effect
 $position = 0;
 $isHalted = true;
 
-// Input
+// Cause
 $subject = 'a';
 $target = '';
 
-// Output
+// Effect
 $position = 0;
 $isHalted = false;
 
-// Input
+// Cause
 $subject = 'a';
 $target = 'a';
 
-// Output
+// Effect
 $position = 1;
 $isHalted = true;
 
-// Input
+// Cause
 $subject = 'ab';
 $target = 'a';
 
-// Output
+// Effect
 $position = 1;
 $isHalted = false;
 
-// Input
+// Cause
 $subject = 'ab';
 $target = 'ab';
 
-// Output
+// Effect
 $position = 2;
 $isHalted = true;

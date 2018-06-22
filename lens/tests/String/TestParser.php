@@ -11,57 +11,57 @@ $parser = new TestParser();
 $output = $parser->parse($rule, $input);
 
 
-// Input
+// Cause
 $rule = 'andandABC';
 $input = '';
 
-// Output
+// Effect
 throw new ParserException('a', 0);
 
 
-// Input
+// Cause
 $rule = 'andorABC';
 $input = 'c';
 
-// Output
+// Effect
 throw new ParserException('orAB', 0);
 
 
-// Input
+// Cause
 $rule = 'andorABC';
 $input = 'a';
 
-// Output
+// Effect
 throw new ParserException('c', 1);
 
 
-// Input
+// Cause
 $rule = 'andorABC';
 $input = 'ax';
 
-// Output
+// Effect
 throw new ParserException('c', 1);
 
 
-// Input
+// Cause
 $rule = 'andorABC';
 $input = 'ac';
 
-// Output
+// Effect
 $output = 'A and C';
 
 
-// Input
+// Cause
 $rule = 'orandABC';
 $input = 'abd';
 
-// Output
+// Effect
 $output = 'A and B';
 
 
-// Input
+// Cause
 $rule = 'orCandAB';
 $input = 'a';
 
-// Output
+// Effect
 throw new ParserException('orCandAB', 0);
